@@ -8,15 +8,23 @@ on:
 jobs:
   register-resource-providers:
     runs-on: ubuntu-latest
+    environment: Sandbox
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Install from PSGallery
+      shell: pwsh
+      run: |
+        Set-PSRepository PSGallery -InstalltionPolicy Trusted
+        Install-Module Az.SpringCloud, Az -AllowClobber
+
     - name: Login to Azure
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
 
     - name: Set up Azure PowerShell
       uses: Azure/powershell@v1
