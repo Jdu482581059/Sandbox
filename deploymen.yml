@@ -1,0 +1,47 @@
+trigger:
+- 'push'
+
+pool:
+  vmImage: 'windows-latest'
+
+stages:
+- stage: Deploy
+  jobs:
+  - job: PowerShellDeployment
+    steps:
+    - task: UseDotNet@2
+      inputs:
+        packageType: 'sdk'
+        version: '3.x'
+        installationPath: $(Agent.ToolsDirectory)/dotnet
+
+    - task: AzurePowerShell@5
+      inputs:
+        azureSubscription: '01312e25-c8f2-49dc-a847-e994d5d4729b'  # Replace with your Azure service connection
+        scriptType: 'FilePath'
+        scriptPath: '/workspaces/Sandbox/deploy.ps1'  # Replace with the path to your PowerShell script
+        azurePowerShellVersion: 'LatestVersion'
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: 'PowerShellScriptArtifact'
+
+- stage: Run
+  jobs:
+  - job: RunPowerShellScript
+    pool:
+      vmImage: 'windows-latest'
+    dependsOn: Deploy
+    steps:
+    - task: DownloadPipelineArtifact@2
+      inputs:
+        artifactName: 'PowerShellScriptArtifact'
+        path: '$(Pipeline.Workspace)'
+
+    - task: AzurePowerShell@5
+      inputs:
+        azureSubscription: '01312e25-c8f2-49dc-a847-e994d5d4729b'  # Replace with your Azure service connection
+        scriptType: 'FilePath'
+        scriptPath: '/workspaces/Sandbox/deploy.ps1'  # Replace with the correct path to your PowerShell script
+        azurePowerShellVersion: 'LatestVersion'
