@@ -14,19 +14,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install from PSGallery
-      shell: pwsh
-      run: |
-        Set-PSRepository PSGallery -InstallationPolicy Trusted
-        Install-Module Az.SpringCloud, Az -AllowClobber
-
     - name: Login to Azure
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CRED }}
         enable-AzPSSession: true
 
-    - name: Set up Azure PowerShell
+    - name: Run Azure PowerShell
       uses: Azure/powershell@v1
       with:
         inlinescript: .\deploy.ps1
