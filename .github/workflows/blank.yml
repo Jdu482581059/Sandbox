@@ -31,8 +31,3 @@ jobs:
       with:
         inlinescript: .\deploy.ps1
         azPSVersion: 'latest'
-
-    - name: Run PowerShell script
-      run: |
-        $ErrorActionPreference = 'Stop'
-        .\deploy.ps1
