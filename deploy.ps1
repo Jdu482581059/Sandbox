@@ -2,9 +2,6 @@
 $subscriptionId = "01312e25-c8f2-49dc-a847-e994d5d4729b"
 $resourceProvidersToRegister = @("Microsoft.Network", "Microsoft.App") # Add your resource providers here
 
-# Connect to Azure account
-Connect-AzAccount
-
 # Set the subscription context
 Set-AzContext -Subscription $subscriptionId
 
