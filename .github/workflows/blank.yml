@@ -17,7 +17,7 @@ jobs:
     - name: Install from PSGallery
       shell: pwsh
       run: |
-        Set-PSRepository PSGallery -InstalltionPolicy Trusted
+        Set-PSRepository PSGallery -InstallationPolicy Trusted
         Install-Module Az.SpringCloud, Az -AllowClobber
 
     - name: Login to Azure
