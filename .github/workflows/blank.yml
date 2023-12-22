@@ -1,0 +1,28 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches:
+      - main  # Change this to your main branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Azure PowerShell
+      uses: azure/setup-powershell@v0.7.0
+      with:
+        azPSVersion: 'latest'
+
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.Sandbox_Secret_1 }}
+
+    - name: Deploy PowerShell script to Azure
+      run:
+        az group deployment create --resource-group Sandbox --template-file deploy.ps1 --subscription 01312e25-c8f2-49dc-a847-e994d5d4729b
