@@ -16,6 +16,7 @@ jobs:
     - name: Set up Azure PowerShell
       uses: Azure/powershell@v1
       with:
+        inlinescript: deploy.ps1
         azPSVersion: 'latest'
 
     - name: Login to Azure
